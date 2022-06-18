@@ -5,6 +5,7 @@ let lockBoard = false;
 
 function flipCard(){
     if(lockBoard) return;
+    if(this === firstCard) return;
 
     this.classList.add('flip');
 
@@ -30,16 +31,33 @@ function checkForMath(){
 function disableCards(){
     firstCard.removeEventListener('click', flipCard);
     secondeCard.removeEventListener('click', flipCard);
+
+    resetBoard();
 }
 
 function unflipcard(){
+    lockBoard = true;
+
     setTimeout(() => {
         firstCard.classList.remove('flip');
         secondeCard.classList.remove('flip');
+
+        resetBoard();
     }, 2000)
 }
+
+function resetBoard(){
+    [hasFlippedCard, lockBoard] = [false, false];
+    [firstCard, secondeCard] = [null, null];
+}
+
+(function shuffle(){
+    cards.forEach((card) => {
+        let randomPosition = Math.floor(Math.random() * 12);
+        card.style.order = randomPosition;
+    })
+})(); /* Imediatly invoked function */
 
 cards.forEach((card) => {
     card.addEventListener('click', flipCard);
 })
-
